@@ -1,0 +1,39 @@
+<!-- <p>movies-list works!</p> -->
+
+
+
+
+<div class="mx-5">
+  <h1> Le tableau des movies</h1>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Title</th>
+      <th scope="col">Date</th>
+      <th scope="col">Réalisateur</th>
+      <th scope="col">Note</th>
+      <th scope="col">Synopsis</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (movie of movies$ | async; track movie.id) { 
+    <tr>
+      <!-- <th scope="row"> 1 </th> -->
+      <td>{{ movie.id }}</td>
+      <td>{{ movie.title }}</td>
+        <td>{{ movie.releaseDate | date:'dd/MM/yyyy' }}</td>
+        <td>{{ movie.director }}</td>
+        <td>{{ movie.rate }}</td>
+        <td>{{ movie.synopsis }}</td>
+        <td><button type="button" class="btn btn-danger deleteButton" (click)="deleteMovie(movie)"><i class="bi bi-trash"></i></button>
+        <td><button type="button" class="btn btn-success" [routerLink]="['/add-movie', movie.id]"><i class="bi bi-arrow-counterclockwise"></i></button></td>
+    </tr>
+    }
+  </tbody>
+</table>
+</div>
+<div class="d-grid gap-2 col-3 mx-auto">
+<button type="button" class="btn btn-secondary" routerLink="/add-movie">Nouveau film</button>
+</div>

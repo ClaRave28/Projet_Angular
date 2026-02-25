@@ -1,0 +1,30 @@
+<!-- <p>add-movie works!</p> -->
+
+<!-- <div class="d-flex flex-column w-50">
+    <label for="title">Titre</label>
+    <input type="text" id="title" name="title" [(ngModel)]="movie.title"/>
+</div> -->
+
+<div class="w-50 mx-auto mt-4">
+<div class="mb-3">
+  <label for="title" class="form-label">Titre du film</label>
+  <input type="text" class="form-control" id="title" [(ngModel)]="movie.title" placeholder="Titanic">
+</div>
+<div class="mb-3">
+  <label for="director" class="form-label">Réalisateur du film</label>
+  <input type="text" class="form-control" id="director" [(ngModel)]="movie.director" placeholder="James Cameron">
+</div>
+<div class="mb-3">
+  <label for="releaseDate" class="form-label">Date du film</label>
+  <input type="date" class="form-control" id="releaseDate" [(ngModel)]="movie.releaseDate">
+</div>
+<div class="mb-3">
+  <label for="synopsis" class="form-label">Synopsis du film</label>
+  <input type="text" class="form-control" id="synopsis" [(ngModel)]="movie.synopsis" placeholder="text">
+</div>
+
+
+<div class="d-grid gap-2 col-3 mx-auto">
+ <button class="btn btn-warning" (click)="saveMovie()" routerLink="/movies">Ajouter/modifier</button>
+ </div>
+</div>

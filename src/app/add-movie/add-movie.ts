@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Movie } from '../models/movie';
 import { MoviesApi } from '../services/movies-api';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   standalone : true,
@@ -18,8 +18,6 @@ export class AddMovie implements OnInit {
   private readonly moviesApi = inject(MoviesApi);
   private readonly router = inject(Router);
    private readonly route = inject(ActivatedRoute);
-  private readonly httpClient = inject(HttpClient);
-  readonly url = "http://localhost:8080/movies"
 
 
   movie: Movie = {
@@ -33,7 +31,8 @@ export class AddMovie implements OnInit {
     image: undefined
   }
 
-  
+
+  constructor(private toastr: ToastrService,) { }
 
    addMovie(): void {
     this.moviesApi.addMovie(this.movie).subscribe(
@@ -68,18 +67,20 @@ saveMovie() {
     // UPDATE
     this.moviesApi.updateMovie(this.movie).subscribe(() => {
       this.router.navigate(['/movies']);
+      this.toastr.success('Movie updated successfully.');
     });
 
   } else {
     // CREATE
     this.moviesApi.addMovie(this.movie).subscribe(() => {
       this.router.navigate(['/movies']);
+      this.toastr.success('Movie added!');
     });
   }
 
 }
 
- 
+
 
 
 

@@ -5,6 +5,7 @@ import {AddMovie} from './add-movie/add-movie';
 import {SignIn} from './sign-in/sign-in';
 import {UsersList} from './users-list/users-list';
 import {UserReviews} from './user-reviews/user-reviews';
+import { FilmsVus } from './films-vus/films-vus';
 
 export const routes: Routes = [
 
@@ -15,4 +16,6 @@ export const routes: Routes = [
     { path: 'sign-in', component: SignIn},
     { path: 'users', component: UsersList},
     { path: "users/reviews", component: UserReviews }
+    {path: 'films-vus', component: FilmsVus}
+
 ];

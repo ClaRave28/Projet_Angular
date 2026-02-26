@@ -52,7 +52,11 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+               "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           },
           "configurations": {
@@ -80,6 +84,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
+          
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
@@ -90,6 +95,8 @@
             }
           },
           "defaultConfiguration": "development"
+          
+            
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"
@@ -110,7 +117,11 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+            ],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
             ]
           }
         }

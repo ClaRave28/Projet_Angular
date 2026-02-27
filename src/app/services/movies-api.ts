@@ -2,7 +2,6 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Movie } from '../models/movie';
-import { AsyncPipe, JsonPipe, SlicePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -20,12 +19,12 @@ export class MoviesApi {
   return this.httpClient.post<Movie>(this.url, movie);
 }
 
-deleteMovie(id: number): Observable<void> { 
+deleteMovie(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.url}/${id}`);
 }
 
 getMovieById(id: number) {
- 
+
   return this.httpClient.get<Movie>(`${this.url}/${id}`);
 }
 
@@ -37,5 +36,5 @@ updateMovie(movie: Movie) {
 }
 
 
-  
+
 }

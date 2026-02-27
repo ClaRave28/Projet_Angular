@@ -2,13 +2,21 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import {provideHttpClient } from '@angular/common/http';
+import {provideToastr} from 'ngx-toastr';
+import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient()
+    provideHttpClient(),
+    provideAnimationsAsync(),
+    provideToastr({
+      timeOut: 3000,
+      positionClass: 'toast-top-left',
+      preventDuplicates: true,
+    }),
   ]
 };

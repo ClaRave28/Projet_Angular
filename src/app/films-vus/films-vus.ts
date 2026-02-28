@@ -27,6 +27,8 @@ export class FilmsVus {
   this.ratingTempScena = movie.userRateScena || 0;
   this.ratingTempActeurs = movie.userRateActeurs || 0;
   this.ratingTempDecors = movie.userRateDecors || 0;
+  this.noteglobale = movie.noteMoyenne || 0;
+ 
 
 
 }
@@ -50,7 +52,11 @@ export class FilmsVus {
   ratingTempActeurs: number = 0;
   ratingTempDecors: number = 0;
 
+
   // fonction save pour sauvegarder la popup
+
+  noteglobale : number = 0;
+  noteMoyenne : number = 0;
 
 save() {
   if(this.selectedMovie){
@@ -59,8 +65,11 @@ save() {
     this.selectedMovie.userRateScena = this.ratingTempScena;
     this.selectedMovie.userRateActeurs = this.ratingTempActeurs;
     this.selectedMovie.userRateDecors = this.ratingTempDecors;
+    this.noteglobale = this.moyenne(this.ratingTemp, this.ratingTempActeurs, this.ratingTempDecors, this.ratingTempScena)
+    this.selectedMovie.noteMoyenne = this.noteglobale;
+    this.selectedMovie.hasRated = this.noteglobale > 0;
   }
-    console.log("Sauvegardé !");
+  
   }
 
   // Notes du scénario------------------------------------
@@ -96,6 +105,14 @@ save() {
       this.ratingTempDecors = value;
     }
     
+  }
+
+  // fonction moyenne
+
+ 
+  moyenne(noteGlobale:number, noteDecors:number, noteActeur : number, noteScena:number){
+   
+    return Math.round((noteGlobale + noteDecors +  noteActeur + noteScena)/4)
   }
 
 

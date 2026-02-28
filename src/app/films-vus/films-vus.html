@@ -11,9 +11,17 @@
   <div class="card-body">
     <h5 class="card-title">{{ movie.title }}</h5>
     <button type="button" class="btn btn-primary" (click)="selectMovie(movie)" data-bs-toggle="modal"
-      data-bs-target="#popup">
-      Mettre une note
+      data-bs-target="#popup" [class.btn-secondary]="movie.hasRated">
+       {{ movie.hasRated ? 'Modifier la note' : 'Mettre une note' }}
     </button>
+
+     <hr>
+
+    <p *ngIf="!movie.hasRated">Pas encore noté ⭐</p>
+<p class = "note" *ngIf="movie.hasRated">Note : {{ movie.noteMoyenne }}/5</p>
+   
+    
+
   </div>
 </div>
 }
@@ -23,7 +31,7 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         <h5 class="modal-title">
           Noter {{ selectedMovie?.title }}
         </h5>
@@ -32,18 +40,18 @@
 
       <div class="modal-body">
 
-         <!-- Notes scénarios -->
+        <!-- Notes scénarios -->
 
-          <br />
+        <br />
 
-          <p>Note scénario :</p>
+        <p>Note scénario :</p>
 
-          <div class="rating-container">
+        <div class="rating-container">
 
           <div class="rating">
-              <span *ngFor="let star of [1,2,3,4,5]" (click)="rateScena(star)" [class.filled]="star <= ratingTempScena">
-                ★
-              </span>
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="rateScena(star)" [class.filled]="star <= ratingTempScena">
+              ★
+            </span>
           </div>
           <p class="note">Note : {{ ratingTempScena }}/5</p>
 
@@ -53,14 +61,15 @@
 
         <!-- Note du jeu d'acteur -->
 
-         <p>Note jeu d'acteurs :</p>
+        <p>Note jeu d'acteurs :</p>
 
-          <div class="rating-container">
+        <div class="rating-container">
 
           <div class="rating">
-              <span *ngFor="let star of [1,2,3,4,5]" (click)="rateActeurs(star)" [class.filled]="star <= ratingTempActeurs">
-                ★
-              </span>
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="rateActeurs(star)"
+              [class.filled]="star <= ratingTempActeurs">
+              ★
+            </span>
           </div>
           <p class="note">Note : {{ ratingTempActeurs }}/5</p>
 
@@ -71,14 +80,14 @@
 
         <!-- Note des décors -->
 
-         <p>Note décors et costumes :</p>
+        <p>Note décors et costumes :</p>
 
-          <div class="rating-container">
+        <div class="rating-container">
 
           <div class="rating">
-              <span *ngFor="let star of [1,2,3,4,5]" (click)="rateDecors(star)" [class.filled]="star <= ratingTempDecors">
-                ★
-              </span>
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="rateDecors(star)" [class.filled]="star <= ratingTempDecors">
+              ★
+            </span>
           </div>
           <p class="note">Note : {{ ratingTempDecors }}/5</p>
 
@@ -86,16 +95,16 @@
 
         <hr>
         <br />
-        
+
         <!-- Note globale  -->
 
         <p>Note globale :</p>
         <div class="rating-container">
 
           <div class="rating">
-              <span *ngFor="let star of [1,2,3,4,5]" (click)="rate(star)" [class.filled]="star <= ratingTemp">
-                ★
-              </span>
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="rate(star)" [class.filled]="star <= ratingTemp">
+              ★
+            </span>
           </div>
           <p class="note">Note : {{ ratingTemp }}/5</p>
 

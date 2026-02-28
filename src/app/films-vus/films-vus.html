@@ -31,26 +31,81 @@
       </div>
 
       <div class="modal-body">
+
+         <!-- Notes scénarios -->
+
+          <br />
+
+          <p>Note scénario :</p>
+
+          <div class="rating-container">
+
+          <div class="rating">
+              <span *ngFor="let star of [1,2,3,4,5]" (click)="rateScena(star)" [class.filled]="star <= ratingTempScena">
+                ★
+              </span>
+          </div>
+          <p class="note">Note : {{ ratingTempScena }}/5</p>
+
+        </div>
+        <hr>
         <br />
+
+        <!-- Note du jeu d'acteur -->
+
+         <p>Note jeu d'acteurs :</p>
+
+          <div class="rating-container">
+
+          <div class="rating">
+              <span *ngFor="let star of [1,2,3,4,5]" (click)="rateActeurs(star)" [class.filled]="star <= ratingTempActeurs">
+                ★
+              </span>
+          </div>
+          <p class="note">Note : {{ ratingTempActeurs }}/5</p>
+
+        </div>
+
+        <hr>
+        <br />
+
+        <!-- Note des décors -->
+
+         <p>Note décors et costumes :</p>
+
+          <div class="rating-container">
+
+          <div class="rating">
+              <span *ngFor="let star of [1,2,3,4,5]" (click)="rateDecors(star)" [class.filled]="star <= ratingTempDecors">
+                ★
+              </span>
+          </div>
+          <p class="note">Note : {{ ratingTempDecors }}/5</p>
+
+        </div>
+
+        <hr>
+        <br />
+        
+        <!-- Note globale  -->
+
         <p>Note globale :</p>
         <div class="rating-container">
 
           <div class="rating">
-
-            
               <span *ngFor="let star of [1,2,3,4,5]" (click)="rate(star)" [class.filled]="star <= ratingTemp">
                 ★
               </span>
-            
-
           </div>
           <p class="note">Note : {{ ratingTemp }}/5</p>
 
         </div>
 
-        <br />
         <hr>
         <br />
+
+        <!-- emplacement commentaire -->
+
         <div class="mb-3">
           <label for="exampleFormControlTextarea1" class="form-label">commentaire global:</label>
           <textarea class="form-control" rows="3" [(ngModel)]="commentTemp"></textarea>

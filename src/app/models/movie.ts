@@ -12,5 +12,7 @@ export interface Movie {
   userRateScena?:number;
   userRateActeurs?:number;
   userRateDecors?:number;
+  noteMoyenne?:number;
+  hasRated?: boolean;
 
 }

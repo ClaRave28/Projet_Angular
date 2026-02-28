@@ -5,38 +5,61 @@
 <app-historique [movie]="movie"></app-historique>
 } -->
 
-@for (movie of movies$ | async; track movie.id) { 
-  <div class="card shadow m-4" style="width: 15rem; min-height: 30rem">
-    <img  [src]="'http://localhost:8080/movies/' + movie.id + '/image'" class="card-img-top">
-    <div class="card-body">
-      <h5 class="card-title">{{ movie.title }}</h5>
-      <button type="button" class="btn btn-primary"
-              (click)="selectMovie(movie)"
-              data-bs-toggle="modal" data-bs-target="#popup">
-        Mettre une note
-      </button>
-    </div>
+@for (movie of movies$ | async; track movie.id) {
+<div class="card shadow m-4" style="width: 15rem; min-height: 30rem">
+  <img [src]="'http://localhost:8080/movies/' + movie.id + '/image'" class="card-img-top">
+  <div class="card-body">
+    <h5 class="card-title">{{ movie.title }}</h5>
+    <button type="button" class="btn btn-primary" (click)="selectMovie(movie)" data-bs-toggle="modal"
+      data-bs-target="#popup">
+      Mettre une note
+    </button>
   </div>
+</div>
 }
 
 <div class="modal fade" id="popup" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
     <div class="modal-content">
 
       <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" ></button>
         <h5 class="modal-title">
           Noter {{ selectedMovie?.title }}
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
       </div>
 
       <div class="modal-body">
-        ...
+        <br />
+        <p>Note globale :</p>
+        <div class="rating-container">
+
+          <div class="rating">
+
+            
+              <span *ngFor="let star of [1,2,3,4,5]" (click)="rate(star)" [class.filled]="star <= ratingTemp">
+                ★
+              </span>
+            
+
+          </div>
+          <p class="note">Note : {{ ratingTemp }}/5</p>
+
+        </div>
+
+        <br />
+        <hr>
+        <br />
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">commentaire global:</label>
+          <textarea class="form-control" rows="3" [(ngModel)]="commentTemp"></textarea>
+        </div>
       </div>
 
       <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button class="btn btn-primary">Save changes</button>
+        <!-- <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button class="btn btn-primary" (click)="save()" data-bs-dismiss="modal">Save</button>
       </div>
 
     </div>

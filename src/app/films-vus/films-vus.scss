@@ -3,3 +3,50 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
+// .modal-header {
+//   justify-content: flex-start;
+// }
+
+.btn-close {
+  margin-left: 0;
+}
+
+.modal-header {
+  .modal-title {
+    margin-left: auto;
+  }
+}
+
+.rating {
+  font-size: 2rem;
+  cursor: pointer;
+  color: #ccc;
+
+  span {
+    transition: 0.2s;
+  }
+
+  .filled {
+    color: gold;
+  }
+
+  span:hover {
+    transform: scale(1.2);
+  }
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.note {
+  margin: 0;
+ 
+ 
+}
+
+
+

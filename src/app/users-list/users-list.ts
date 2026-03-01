@@ -4,12 +4,15 @@ import {ColDef} from 'ag-grid-community';
 import {AgGridAngular} from 'ag-grid-angular';
 import {User} from '../models/User';
 import {RouterLink} from '@angular/router';
+import {EditCellRenderer} from './edit-cell-renderer/edit-cell-renderer';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-users-list',
   imports: [
     AgGridAngular,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule
   ],
   templateUrl: './users-list.html',
   styleUrl: './users-list.scss',
@@ -17,9 +20,26 @@ import {RouterLink} from '@angular/router';
 })
 export class UsersList implements OnInit {
 
+  context = { componentParent: this };
+
   protected readonly userService = inject(UserService);
+  protected isEditPopupOpen = false;
 
   protected rowData: User[] = [];
+
+  editForm: FormGroup;
+  selectedUser!: User;
+
+  constructor(private fb: FormBuilder) {
+    this.editForm = this.fb.group({
+      id: [],
+      firstName: [''],
+      lastName: [''],
+      age: [],
+      email: [''],
+      points: []
+    });
+  }
 
   async ngOnInit(): Promise<void> {
     try {
@@ -36,19 +56,11 @@ export class UsersList implements OnInit {
     { field: 'age', headerName: 'Age', sortable: true, filter: true, maxWidth: 100 },
     { field: 'email', headerName: 'Email', sortable: true, filter: true, flex: 2 },
     { field: 'points', headerName: 'Points', sortable: true, filter: true, maxWidth: 100 },
+
     {
       headerName: 'Actions',
-      maxWidth: 120,
-      cellRenderer: () => {
-        return `
-        <button class="btn btn-sm btn-danger rounded-pill">
-          <i class="bi bi-trash"></i>
-        </button>
-      `;
-      },
-      onCellClicked: (params: any) => {
-        this.deleteUser(params.data);
-      }
+      cellRenderer: EditCellRenderer,
+      maxWidth: 120
     }
   ];
 
@@ -74,5 +86,28 @@ export class UsersList implements OnInit {
     } catch (err) {
       console.error('Erreur suppression', err);
     }
+  }
+
+  openEditPopup(user: User) {
+    this.selectedUser = user;
+    this.editForm.patchValue(user);
+    this.isEditPopupOpen = true; // affiche le popup
+  }
+
+  async saveEdit() {
+    if (!this.selectedUser) return;
+
+    const updatedUser = this.editForm.value as User;
+    const savedUser = await this.userService.updateUser(updatedUser);
+
+    const index = this.rowData.findIndex(u => u.id === savedUser.id);
+    this.rowData[index] = savedUser;
+    this.rowData = [...this.rowData]; // refresh grid
+
+    this.isEditPopupOpen = false; // ferme le popup
+  }
+
+  closeEditPopup() {
+    this.isEditPopupOpen = false;
   }
 }

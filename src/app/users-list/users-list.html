@@ -13,7 +13,30 @@
         [defaultColDef]="defaultColDef"
         [pagination]="true"
         [paginationPageSize]="10"
+        [context]="context"
       ></ag-grid-angular>
     </div>
   </div>
 </div>
+
+@if(isEditPopupOpen){
+<div class="popup-backdrop" >
+  <div class="popup-content">
+    <h5>Edit User</h5>
+
+    <form [formGroup]="editForm">
+
+      <input formControlName="firstName" placeholder="First Name" class="form-control mb-2">
+      <input formControlName="lastName" placeholder="Last Name" class="form-control mb-2">
+      <input formControlName="age" type="number" placeholder="Age" class="form-control mb-2">
+      <input formControlName="email" placeholder="Email" class="form-control mb-2">
+
+    </form>
+
+    <div class="d-flex justify-content-end gap-2 mt-2">
+      <button class="btn btn-secondary" (click)="closeEditPopup()">Cancel</button>
+      <button class="btn btn-primary" (click)="saveEdit()">Save</button>
+    </div>
+  </div>
+</div>
+}

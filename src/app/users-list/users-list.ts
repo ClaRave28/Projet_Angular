@@ -6,6 +6,7 @@ import {User} from '../models/User';
 import {RouterLink} from '@angular/router';
 import {EditCellRenderer} from './edit-cell-renderer/edit-cell-renderer';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {ToastrService} from 'ngx-toastr';
 
 @Component({
   selector: 'app-users-list',
@@ -22,6 +23,8 @@ export class UsersList implements OnInit {
 
   context = { componentParent: this };
 
+
+  protected readonly toastr = inject(ToastrService);
   protected readonly userService = inject(UserService);
   protected isEditPopupOpen = false;
 
@@ -50,7 +53,7 @@ export class UsersList implements OnInit {
   }
 
   columnDefs: ColDef[] = [
-    { field: 'id', headerName: 'ID', sortable: true, filter: true, maxWidth: 80 },
+    { field: 'id', headerName: 'ID', sortable: true, maxWidth: 80 },
     { field: 'firstName', headerName: 'First Name', sortable: true, filter: true },
     { field: 'lastName', headerName: 'Last Name', sortable: true, filter: true },
     { field: 'age', headerName: 'Age', sortable: true, filter: true, maxWidth: 100 },
@@ -58,6 +61,7 @@ export class UsersList implements OnInit {
     { field: 'points', headerName: 'Points', sortable: true, filter: true, maxWidth: 100 },
 
     {
+      sortable: false,
       headerName: 'Actions',
       cellRenderer: EditCellRenderer,
       maxWidth: 120
@@ -79,12 +83,10 @@ export class UsersList implements OnInit {
 
     try {
       await this.userService.deleteUser(user.id);
-
-      // Retirer la ligne du tableau
       this.rowData = this.rowData.filter(u => u.id !== user.id);
-
+      this.toastr.success('Deleted');
     } catch (err) {
-      console.error('Erreur suppression', err);
+      this.toastr.error("Deleting error");
     }
   }
 
@@ -98,13 +100,17 @@ export class UsersList implements OnInit {
     if (!this.selectedUser) return;
 
     const updatedUser = this.editForm.value as User;
-    const savedUser = await this.userService.updateUser(updatedUser);
+    try {
+      const savedUser = await this.userService.updateUser(updatedUser);
+      const index = this.rowData.findIndex(u => u.id === savedUser.id);
+      this.rowData[index] = savedUser;
+      this.rowData = [...this.rowData];
 
-    const index = this.rowData.findIndex(u => u.id === savedUser.id);
-    this.rowData[index] = savedUser;
-    this.rowData = [...this.rowData]; // refresh grid
-
-    this.isEditPopupOpen = false; // ferme le popup
+      this.isEditPopupOpen = false;
+      this.toastr.success('User saved successfully');
+    } catch (err) {
+      this.toastr.error("Saving error");
+    }
   }
 
   closeEditPopup() {

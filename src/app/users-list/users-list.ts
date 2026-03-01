@@ -3,7 +3,7 @@ import {UserService} from '../services/user-service';
 import {ColDef} from 'ag-grid-community';
 import {AgGridAngular} from 'ag-grid-angular';
 import {User} from '../models/User';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {EditCellRenderer} from './edit-cell-renderer/edit-cell-renderer';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
@@ -23,7 +23,6 @@ export class UsersList implements OnInit {
 
   context = { componentParent: this };
 
-
   protected readonly toastr = inject(ToastrService);
   protected readonly userService = inject(UserService);
   protected isEditPopupOpen = false;
@@ -33,7 +32,7 @@ export class UsersList implements OnInit {
   editForm: FormGroup;
   selectedUser!: User;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private router : Router, private fb: FormBuilder) {
     this.editForm = this.fb.group({
       id: [],
       firstName: [''],
@@ -115,5 +114,16 @@ export class UsersList implements OnInit {
 
   closeEditPopup() {
     this.isEditPopupOpen = false;
+  }
+
+  onRowClicked(event: any) {
+    const clickedElement = event.event.target as HTMLElement;
+    if (clickedElement.closest('button')) return; // ignore boutons Edit/Delete
+
+    const user: User = event.data;
+    this.userService.setUser(user); // ✅ met à jour le signal global
+
+    // navigue vers la page reviews (sans passer l’ID)
+    this.router.navigate(['/users/reviews']);
   }
 }

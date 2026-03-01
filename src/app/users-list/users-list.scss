@@ -1,0 +1,47 @@
+.custom-grid {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  font-size: 14px;
+}
+
+.custom-grid .ag-header {
+  background: linear-gradient(135deg, #520B98, #6366f1);
+  border-bottom: none;
+}
+
+.custom-grid .ag-header-cell {
+  border-right: none;
+}
+
+.custom-grid .ag-header-cell-label {
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.custom-grid .ag-row {
+  border-bottom: 1px solid rgba(105, 15, 194, 0.2);
+  transition: all 0.25s ease;
+}
+
+.custom-grid .ag-row:nth-child(even) {
+  background: rgba(128, 18, 237, 0.08);
+}
+
+.custom-grid .ag-row-hover {
+  background: rgba(128, 18, 237, 0.18) !important;
+}
+
+.custom-grid .ag-cell {
+  color: #2d0a52;
+  font-weight: 500;
+}
+
+.custom-grid .ag-paging-panel {
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  font-weight: 500;
+}
+
+

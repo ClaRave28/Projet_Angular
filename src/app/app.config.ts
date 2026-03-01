@@ -2,9 +2,14 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChang
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import {provideHttpClient } from '@angular/common/http';
+import {provideHttpClient} from '@angular/common/http';
 import {provideToastr} from 'ngx-toastr';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
+import {BrowserModule} from '@angular/platform-browser';
+import {AgGridModule} from 'ag-grid-angular';
+import { ModuleRegistry, AllCommunityModule } from 'ag-grid-community';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -18,5 +23,7 @@ export const appConfig: ApplicationConfig = {
       positionClass: 'toast-top-left',
       preventDuplicates: true,
     }),
+    BrowserModule,
+    AgGridModule,
   ]
 };

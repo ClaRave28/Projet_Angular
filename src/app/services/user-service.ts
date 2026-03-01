@@ -19,4 +19,10 @@ export class UserService {
   async deleteUser(id: number) {
     return firstValueFrom(this.httpClient.delete(`${this.url}/${id}`));
   }
+
+  async updateUser(updatedUser: User): Promise<User> {
+    return firstValueFrom(
+      this.httpClient.put<User>(`${this.url}/${updatedUser.id}`, updatedUser)
+    );
+  }
 }

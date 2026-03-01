@@ -1,0 +1,52 @@
+<div class="container mt-5">
+  <div class="card shadow-lg rounded-4 p-4">
+    <h3 class="mb-4 text-center">Create User</h3>
+
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+
+      <div class="row">
+        <!-- Firstname -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">First Name</label>
+          <input type="text"
+                 class="form-control rounded-3"
+                 formControlName="firstName">
+        </div>
+
+        <!-- Lastname -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Last Name</label>
+          <input type="text"
+                 class="form-control rounded-3"
+                 formControlName="lastName">
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Age -->
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Age</label>
+          <input type="number"
+                 class="form-control rounded-3"
+                 formControlName="age">
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div class="mb-4">
+        <label class="form-label">Email</label>
+        <input type="email"
+               class="form-control rounded-3"
+               formControlName="email">
+      </div>
+
+      <div class="d-flex justify-content-end">
+        <button type="submit"
+                class="btn btn-primary px-4 rounded-pill shadow-sm">
+          Sign In
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

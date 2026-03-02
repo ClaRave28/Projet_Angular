@@ -8,20 +8,21 @@
 @for (movie of movies$ | async; track movie.id) {
 <div class="card shadow m-4" style="width: 15rem; min-height: 30rem">
   <img [src]="'http://localhost:8080/movies/' + movie.id + '/image'" class="card-img-top">
-  <div class="card-body">
-    <h5 class="card-title">{{ movie.title }}</h5>
-    <button type="button" class="btn btn-primary" (click)="selectMovie(movie)" data-bs-toggle="modal"
-      data-bs-target="#popup" [class.btn-secondary]="movie.hasRated">
+  <div class="card-body d-flex flex-column">
+    <h5 class="card-title text-center">{{ movie.title }}</h5>
+
+     <div class="mt-auto text-center">
+
+    <button type="button" class="btn btn-warning text-dark" (click)="selectMovie(movie)" data-bs-toggle="modal"
+      data-bs-target="#popup" [class.btn-warning]="!movie.hasRated" [class.btn-secondary]="movie.hasRated">
        {{ movie.hasRated ? 'Modifier la note' : 'Mettre une note' }}
     </button>
 
      <hr>
 
-    <p *ngIf="!movie.hasRated">Pas encore noté ⭐</p>
-<p class = "note" *ngIf="movie.hasRated">Note : {{ movie.noteMoyenne }}/5</p>
-   
-    
-
+    <p *ngIf="!movie.hasRated" class="mb-0">Pas encore noté ⭐</p>
+    <p class = "note" *ngIf="movie.hasRated">Note : {{ movie.noteMoyenne }}/5</p>
+    </div>
   </div>
 </div>
 }
@@ -123,7 +124,7 @@
 
       <div class="modal-footer">
         <!-- <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
-        <button class="btn btn-primary" (click)="save()" data-bs-dismiss="modal">Save</button>
+        <button class="btn btn-warning text-dark" (click)="save()" data-bs-dismiss="modal">Save</button>
       </div>
 
     </div>

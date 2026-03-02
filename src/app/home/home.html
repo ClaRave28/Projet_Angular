@@ -1,5 +1,8 @@
 @if (movies$ | async; as movies) {
 
+  <!-- TITRE -->
+  <h2 class="text-center my-4 fw-bold">🎬 Les films du moment</h2>
+
   <!-- CAROUSEL MULTI-FILMS -->
   <div id="movieCarousel" class="carousel slide">
 
@@ -21,12 +24,11 @@
     <div class="carousel-inner">
       @for (slide of getSlides(movies); track $index; let i = $index) {
         <div class="carousel-item" [class.active]="i === 0">
-          <div class="row row-cols-3 g-3 px-5 pt-4 pb-5">
+          <div [class]="'row row-cols-' + moviesPerSlide + ' g-3 px-5 pt-4 pb-5'">
             @for (movie of slide; track movie.id) {
               <div class="col">
                 <div class="card h-100 shadow-sm">
 
-                  <!-- Image pleine hauteur fixe -->
                   <img
                     [src]="'http://localhost:8080/movies/' + movie.id + '/image'"
                     [alt]="movie.title"
@@ -41,7 +43,6 @@
                     @if (movie.rate) {
                       <span class="badge bg-warning text-dark mb-2 align-self-start">⭐ {{ movie.rate }} / 10</span>
                     }
-                    <!-- Synopsis complet -->
                     <p class="card-text flex-grow-1">{{ movie.synopsis }}</p>
                   </div>
 

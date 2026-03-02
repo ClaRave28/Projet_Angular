@@ -1,17 +1,82 @@
-<!-- <p>home works!</p> -->
+@if (movies$ | async; as movies) {
 
- @for (movie of movies$ | async; track movie.id) { 
-     <!-- <p>{{movie.id}}</p>
-  <p>{{ movie.title }}</p> -->
-   <!-- <p>{{movie.releaseDate | date:'dd/MM/yyyy'}}</p> -->
-  <!-- <p>{{movie.director}}</p>
-  <p>{{movie.rate}}</p>
-  <p>{{movie.synopsis}}</p> -->
+  <!-- CAROUSEL MULTI-FILMS -->
+  <div id="movieCarousel" class="carousel slide">
+
+    <!-- Indicators -->
+    <div class="carousel-indicators">
+      @for (slide of getSlides(movies); track $index; let i = $index) {
+        <button
+          type="button"
+          data-bs-target="#movieCarousel"
+          [attr.data-bs-slide-to]="i"
+          [class.active]="i === 0"
+          [attr.aria-current]="i === 0 ? 'true' : null"
+          [attr.aria-label]="'Slide ' + (i + 1)">
+        </button>
+      }
+    </div>
+
+    <!-- Slides : 3 films par slide -->
+    <div class="carousel-inner">
+      @for (slide of getSlides(movies); track $index; let i = $index) {
+        <div class="carousel-item" [class.active]="i === 0">
+          <div class="row row-cols-3 g-3 px-5 pt-4 pb-5">
+            @for (movie of slide; track movie.id) {
+              <div class="col">
+                <div class="card h-100 shadow-sm">
+
+                  <!-- Image pleine hauteur fixe -->
+                  <img
+                    [src]="'http://localhost:8080/movies/' + movie.id + '/image'"
+                    [alt]="movie.title"
+                    class="card-img-top"
+                    style="height: 320px; object-fit: cover; object-position: top;" />
+
+                  <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ movie.title }}</h5>
+                    <p class="card-text text-muted mb-1">
+                      <small>{{ movie.director }} · {{ movie.releaseDate | date:'yyyy' }}</small>
+                    </p>
+                    @if (movie.rate) {
+                      <span class="badge bg-warning text-dark mb-2 align-self-start">⭐ {{ movie.rate }} / 10</span>
+                    }
+                    <!-- Synopsis complet -->
+                    <p class="card-text flex-grow-1">{{ movie.synopsis }}</p>
+                  </div>
+
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Boutons navigation -->
+    <button class="carousel-control-prev" type="button"
+            data-bs-target="#movieCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Précédent</span>
+    </button>
+    <button class="carousel-control-next" type="button"
+            data-bs-target="#movieCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Suivant</span>
+    </button>
+
+  </div>
+
+}
+
+@for (movie of movies$ | async; track movie.id) {
+
+  <!-- <p>{{movie.id}}</p>
+       <p>{{ movie.title }}</p> -->
+    <!-- <p>{{movie.releaseDate | date:'dd/MM/yyyy'}}</p> -->
+    <!-- <p>{{movie.director}}</p>
+    <p>{{movie.rate}}</p>
+    <p>{{movie.synopsis}}</p> -->
   <app-movie-card [movie]="movie"></app-movie-card>
-   
-  
- } 
 
-
-  
-
+}

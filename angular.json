@@ -84,7 +84,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          
+
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
@@ -95,8 +95,8 @@
             }
           },
           "defaultConfiguration": "development"
-          
-            
+
+
         },
         "extract-i18n": {
           "builder": "@angular/build:extract-i18n"

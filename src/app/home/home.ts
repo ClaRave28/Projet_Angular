@@ -18,8 +18,4 @@ export class Home  {
   private readonly moviesApi = inject(MoviesApi);
  movies$ = this.moviesApi.getMovies();
 
- 
-
-
-
 }

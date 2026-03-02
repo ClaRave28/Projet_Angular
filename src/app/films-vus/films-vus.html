@@ -1,0 +1,132 @@
+<!-- <p>films-vus works!</p> -->
+
+<!-- @for (movie of movies$ | async; track movie.id) { 
+
+<app-historique [movie]="movie"></app-historique>
+} -->
+
+@for (movie of movies$ | async; track movie.id) {
+<div class="card shadow m-4" style="width: 15rem; min-height: 30rem">
+  <img [src]="'http://localhost:8080/movies/' + movie.id + '/image'" class="card-img-top">
+  <div class="card-body d-flex flex-column">
+    <h5 class="card-title text-center">{{ movie.title }}</h5>
+
+     <div class="mt-auto text-center">
+
+    <button type="button" class="btn btn-warning text-dark" (click)="selectMovie(movie)" data-bs-toggle="modal"
+      data-bs-target="#popup" [class.btn-warning]="!movie.hasRated" [class.btn-secondary]="movie.hasRated">
+       {{ movie.hasRated ? 'Modifier la note' : 'Mettre une note' }}
+    </button>
+
+     <hr>
+
+    <p *ngIf="!movie.hasRated" class="mb-0">Pas encore noté ⭐</p>
+    <p class = "note" *ngIf="movie.hasRated">Note : {{ movie.noteMoyenne }}/5</p>
+    </div>
+  </div>
+</div>
+}
+
+<div class="modal fade" id="popup" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <h5 class="modal-title">
+          Noter {{ selectedMovie?.title }}
+        </h5>
+
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Notes scénarios -->
+
+        <br />
+
+        <p>Note scénario :</p>
+
+        <div class="rating-container">
+
+          <div class="rating">
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="rateScena(star)" [class.filled]="star <= ratingTempScena">
+              ★
+            </span>
+          </div>
+          <p class="note">Note : {{ ratingTempScena }}/5</p>
+
+        </div>
+        <hr>
+        <br />
+
+        <!-- Note du jeu d'acteur -->
+
+        <p>Note jeu d'acteurs :</p>
+
+        <div class="rating-container">
+
+          <div class="rating">
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="rateActeurs(star)"
+              [class.filled]="star <= ratingTempActeurs">
+              ★
+            </span>
+          </div>
+          <p class="note">Note : {{ ratingTempActeurs }}/5</p>
+
+        </div>
+
+        <hr>
+        <br />
+
+        <!-- Note des décors -->
+
+        <p>Note décors et costumes :</p>
+
+        <div class="rating-container">
+
+          <div class="rating">
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="rateDecors(star)" [class.filled]="star <= ratingTempDecors">
+              ★
+            </span>
+          </div>
+          <p class="note">Note : {{ ratingTempDecors }}/5</p>
+
+        </div>
+
+        <hr>
+        <br />
+
+        <!-- Note globale  -->
+
+        <p>Note globale :</p>
+        <div class="rating-container">
+
+          <div class="rating">
+            <span *ngFor="let star of [1,2,3,4,5]" (click)="rate(star)" [class.filled]="star <= ratingTemp">
+              ★
+            </span>
+          </div>
+          <p class="note">Note : {{ ratingTemp }}/5</p>
+
+        </div>
+
+        <hr>
+        <br />
+
+        <!-- emplacement commentaire -->
+
+        <div class="mb-3">
+          <label for="exampleFormControlTextarea1" class="form-label">commentaire global:</label>
+          <textarea class="form-control" rows="3" [(ngModel)]="commentTemp"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <!-- <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button> -->
+        <button class="btn btn-warning text-dark" (click)="save()" data-bs-dismiss="modal">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>

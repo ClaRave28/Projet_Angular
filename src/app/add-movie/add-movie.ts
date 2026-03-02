@@ -23,7 +23,6 @@ export class AddMovie implements OnInit {
   movie: Movie = {
     title: '',
     director: '',
-    // releaseDate:                   new Date(),
     releaseDate : '',
     synopsis: '',
     id: undefined,

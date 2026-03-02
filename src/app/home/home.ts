@@ -18,11 +18,12 @@ export class Home  {
   private readonly moviesApi = inject(MoviesApi);
  movies$ = this.moviesApi.getMovies();
 
-// Découpe la liste en groupes de 3 films (un groupe = un slide)
-  getSlides(movies: Movie[], size = 3): Movie[][] {
+  readonly moviesPerSlide = 4;
+
+  getSlides(movies: Movie[]): Movie[][] {
     const slides: Movie[][] = [];
-    for (let i = 0; i < movies.length; i += size) {
-      slides.push(movies.slice(i, i + size));
+    for (let i = 0; i < movies.length; i += this.moviesPerSlide) {
+      slides.push(movies.slice(i, i + this.moviesPerSlide));
     }
     return slides;
   }

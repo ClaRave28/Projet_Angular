@@ -2,14 +2,14 @@ import { Component, inject } from '@angular/core';
 import { MoviesApi } from '../services/movies-api';
 import { Movie } from '../models/movie';
 import { OnInit } from '@angular/core';
-import { AsyncPipe, JsonPipe, SlicePipe } from '@angular/common';
+import {AsyncPipe, DatePipe, JsonPipe, NgIf, SlicePipe} from '@angular/common';
 import { MovieCard } from './movie-card/movie-card';
 import { MoviesList } from '../movies-list/movies-list';
 
 
 @Component({
   selector: 'app-home',
-  imports: [AsyncPipe, MovieCard, MoviesList,  SlicePipe, JsonPipe ],
+  imports: [AsyncPipe, MovieCard, MoviesList, SlicePipe, JsonPipe, DatePipe, NgIf,],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
@@ -18,4 +18,13 @@ export class Home  {
   private readonly moviesApi = inject(MoviesApi);
  movies$ = this.moviesApi.getMovies();
 
+  readonly moviesPerSlide = 4;
+
+  getSlides(movies: Movie[]): Movie[][] {
+    const slides: Movie[][] = [];
+    for (let i = 0; i < movies.length; i += this.moviesPerSlide) {
+      slides.push(movies.slice(i, i + this.moviesPerSlide));
+    }
+    return slides;
+  }
 }

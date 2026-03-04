@@ -22,6 +22,11 @@
   <label for="synopsis" class="form-label">Synopsis du film</label>
   <input type="text" class="form-control" id="synopsis" [(ngModel)]="movie.synopsis" placeholder="text">
 </div>
+<div class="mb-3">
+  <label for="image" class="form-label">Affiche du film \(uniquement à la création\)</label>
+  <input type="url" class="form-control" id="image" [(ngModel)]="movie.image" placeholder="text">
+</div>
+
 
 
 <div class="d-grid gap-2 col-3 mx-auto">

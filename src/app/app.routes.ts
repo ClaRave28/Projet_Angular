@@ -7,6 +7,7 @@ import {UsersList} from './users-list/users-list';
 import {UserReviews} from './user-reviews/user-reviews';
 
 import { FilmsVus } from './films-vus/films-vus';
+import {UserProfile} from './user-profile/user-profile';
 
 export const routes: Routes = [
 
@@ -17,6 +18,7 @@ export const routes: Routes = [
     { path: 'users', component: UsersList},
     { path: "users/reviews", component: UserReviews },
     {path: 'add-movie/:id', component: AddMovie},
-    {path: 'films-vus', component: FilmsVus}
+    {path: 'films-vus', component: FilmsVus},
+  {path: 'profile', component: UserProfile},
 
 ];

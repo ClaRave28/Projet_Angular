@@ -10,5 +10,5 @@ import { Home } from './home/home';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('angularLearn');
+  protected readonly title = signal('FilmoCiné');
 }

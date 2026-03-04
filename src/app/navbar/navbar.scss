@@ -4,9 +4,26 @@
 
 .custom-navbar {
   background: linear-gradient(90deg, #6EC1FF, #764ba2);
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  min-height: unset !important;
 }
 
-.custom-navbar .navbar-brand,
 .custom-navbar .nav-link {
   color: #130125;
+}
+
+.custom-navbar .navbar-brand {
+  color: #e6e1eb;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.logo-img {
+  height: 50px;   
+  width: auto;
+  display: block;
 }

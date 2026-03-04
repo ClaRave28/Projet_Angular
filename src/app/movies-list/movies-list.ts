@@ -22,28 +22,14 @@ private readonly moviesApi = inject(MoviesApi);
 constructor(private toastr: ToastrService,) {
 }
 
-deleteMovie(movie: Movie) {
-  const toast = this.toastr.warning(
-  `Cliquer pour supprimer "${movie.title}"`,
-  'Confirmation',
-  {
-    timeOut: 5000,
-    closeButton: true,
-    tapToDismiss: false,
-    positionClass: 'toast-top-center',
-  }
-);
+  deleteMovie(movie: Movie) {
+    const confirmed = confirm(`Voulez-vous vraiment supprimer "${movie.title}" ?`);
 
-
-
-      toast.onTap.subscribe(() => {
-        if (movie.id !== undefined) {
-          this.moviesApi.deleteMovie(movie.id).subscribe(() => {
-            this.movies$ = this.moviesApi.getMovies();
-            this.toastr.success('Film supprimé');
-          });
-      }
+    if (confirmed && movie.id !== undefined) {
+      this.moviesApi.deleteMovie(movie.id).subscribe(() => {
+        this.movies$ = this.moviesApi.getMovies();
+        this.toastr.success('Film supprimé');
       });
-
+    }
   }
 }

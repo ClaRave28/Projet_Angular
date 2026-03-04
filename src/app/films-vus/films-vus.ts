@@ -6,6 +6,8 @@ import { MoviesApi } from '../services/movies-api';
 import { Historique } from '../historique/historique';
 import { FormsModule } from '@angular/forms';
 import { Review, ReviewRequest } from '../models/review';
+import { map } from 'rxjs/operators';
+import { UserService } from '../services/user-service';
 
 
 @Component({
@@ -16,34 +18,35 @@ import { Review, ReviewRequest } from '../models/review';
 })
 export class FilmsVus implements OnInit {
 
+  private readonly userService = inject(UserService);
   private readonly moviesApi = inject(MoviesApi);
   movies$ = this.moviesApi.getMovies();
 
   selectedMovie: any = null;
 
   selectMovie(movie: any) {
-  this.selectedMovie = movie;
-  this.ratingTemp = movie.userRate || 0;
-  this.commentTemp = movie.comment || '';
-  this.ratingTempScena = movie.userRateScena || 0;
-  this.ratingTempActeurs = movie.userRateActeurs || 0;
-  this.ratingTempDecors = movie.userRateDecors || 0;
-  this.noteglobale = movie.noteMoyenne || 0;
- 
+    this.selectedMovie = movie;
+    this.ratingTemp = movie.userRate || 0;
+    this.commentTemp = movie.comment || '';
+    this.ratingTempScena = movie.userRateScena || 0;
+    this.ratingTempActeurs = movie.userRateActeurs || 0;
+    this.ratingTempDecors = movie.userRateDecors || 0;
+    this.noteglobale = movie.noteMoyenne || 0;
 
 
-}
 
-// Note globale ------------------------------------
+  }
+
+  // Note globale ------------------------------------
 
   rate(value: number) {
-    
+
     if (this.ratingTemp === value) {
       this.ratingTemp = value - 1;
     } else {
       this.ratingTemp = value;
     }
-    
+
   }
 
   ratingTemp: number = 0;
@@ -56,93 +59,68 @@ export class FilmsVus implements OnInit {
 
   // fonction save pour sauvegarder la popup
 
-  noteglobale : number = 0;
-  noteMoyenne : number = 0;
+  noteglobale: number = 0;
+  noteMoyenne: number = 0;
 
-// save() {
-//   if(this.selectedMovie){
-//     this.selectedMovie.userRate = this.ratingTemp;
-//     this.selectedMovie.comment = this.commentTemp;
-//     this.selectedMovie.userRateScena = this.ratingTempScena;
-//     this.selectedMovie.userRateActeurs = this.ratingTempActeurs;
-//     this.selectedMovie.userRateDecors = this.ratingTempDecors;
-//     this.noteglobale = this.moyenne(this.ratingTemp, this.ratingTempActeurs, this.ratingTempDecors, this.ratingTempScena)
-//     this.selectedMovie.noteMoyenne = this.noteglobale;
-//     this.selectedMovie.hasRated = this.noteglobale > 0;
 
-//     this.moviesApi.updateMovie(this.selectedMovie).subscribe({
-//       next: ()=> console.log("Saved"),
-//       error: err => console.error("save error", err)
-//     });
-//   }
+  currentUser: any;
 
-//   }
+  ngOnInit() {
+    this.currentUser = this.userService.getCurrentUser();
 
-currentUser: any;
-
-  ngOnInit(){
-const mockUser = {
-  id: 1,
-  firstName: "catia",
-  lastName: "catia",
-  age: 49,
-  email: "cnqjdc@_getNormalisedMousePosition.com",
-  points: 48,
-};
-
-this.currentUser = mockUser;
-//     this.currentUser = JSON.parse(
-//       localStorage.getItem("user") || "{}"
-//     );
+    if (this.currentUser?.id) {
+      this.userService.getUserReviews(this.currentUser.id).then(reviews => {
+        this.movies$ = this.movies$.pipe(
+          map(movies => movies.map(movie => {
+            const review = reviews.find((r: any) => r.movie.id === movie.id);
+            if (review) {
+              movie.hasRated = true;
+              movie.noteMoyenne = review.rate;
+              movie.comment = review.text;
+            }
+            return movie;
+          }))
+        );
+      });
+    }
   }
 
 
 
 
 
-save() {
-  if(this.selectedMovie){
-    this.selectedMovie.userRate = this.ratingTemp;
-    this.selectedMovie.comment = this.commentTemp;
-    this.selectedMovie.userRateScena = this.ratingTempScena;
-    this.selectedMovie.userRateActeurs = this.ratingTempActeurs;
-    this.selectedMovie.userRateDecors = this.ratingTempDecors;
-    this.noteglobale = this.moyenne(this.ratingTemp, this.ratingTempActeurs, this.ratingTempDecors, this.ratingTempScena)
-    this.selectedMovie.noteMoyenne = this.noteglobale;
-    this.selectedMovie.hasRated = this.noteglobale > 0;
+  save() {
+    if (this.selectedMovie) {
+      this.selectedMovie.userRate = this.ratingTemp;
+      this.selectedMovie.comment = this.commentTemp;
+      this.selectedMovie.userRateScena = this.ratingTempScena;
+      this.selectedMovie.userRateActeurs = this.ratingTempActeurs;
+      this.selectedMovie.userRateDecors = this.ratingTempDecors;
+      this.noteglobale = this.moyenne(this.ratingTemp, this.ratingTempActeurs, this.ratingTempDecors, this.ratingTempScena)
+      this.selectedMovie.noteMoyenne = this.noteglobale;
+      this.selectedMovie.hasRated = this.noteglobale > 0;
 
-  //   const review: ReviewRequest = {
-  //   // id: 0,
-  //   userId: this.currentUser.id, 
-  //   filmId: this.selectedMovie.id,
-  //   rate: this.moyenne(
-  //     this.ratingTempScena,
-  //     this.ratingTempActeurs,
-  //     this.ratingTempDecors,
-  //     this.ratingTemp
-  //   ),
-  //   text: this.commentTemp,
-  //    reviewDate: new Date()
-  // };
 
-  const review = {
-  user: { id: this.currentUser.id },
-  movie: { id: this.selectedMovie.id },
-  rate: this.moyenne(
-    this.ratingTempScena,
-    this.ratingTempActeurs,
-    this.ratingTempDecors,
-    this.ratingTemp
-  ),
-  text: this.commentTemp
-};
+      const review = {
+        user: { id: this.currentUser.id },
+        movie: { id: this.selectedMovie.id },
+        rate: this.moyenne(
+          this.ratingTempScena,
+          this.ratingTempActeurs,
+          this.ratingTempDecors,
+          this.ratingTemp
+        ),
+        text: this.commentTemp
+      };
 
-    this.moviesApi.addReview(review).subscribe({
-    next: () => console.log("Review saved ✅"),
-    error: err => {console.error("Review save error ❌", err)
-    console.error("Error details:", err.error);}
-  });
-  }
+      this.moviesApi.addReview(review).subscribe({
+        next: () => console.log("Review saved ✅"),
+        error: err => {
+          console.error("Review save error ❌", err)
+          console.error("Error details:", err.error);
+        }
+      });
+    }
 
   }
 
@@ -151,50 +129,50 @@ save() {
   // Notes du scénario------------------------------------
 
   rateScena(value: number) {
-    
+
     if (this.ratingTempScena === value) {
       this.ratingTempScena = value - 1;
     } else {
       this.ratingTempScena = value;
     }
-    
+
   }
 
   // Notes jeu d'acteurs------------------------------------
 
   rateActeurs(value: number) {
-    
+
     if (this.ratingTempActeurs === value) {
       this.ratingTempActeurs = value - 1;
     } else {
       this.ratingTempActeurs = value;
     }
-    
+
   }
   // Notes décors------------------------------------
 
-   rateDecors(value: number) {
-    
+  rateDecors(value: number) {
+
     if (this.ratingTempDecors === value) {
       this.ratingTempDecors = value - 1;
     } else {
       this.ratingTempDecors = value;
     }
-    
+
   }
 
   // fonction moyenne
 
- 
-  moyenne(noteGlobale:number, noteDecors:number, noteActeur : number, noteScena:number){
-   
-    return Math.round((noteGlobale + noteDecors +  noteActeur + noteScena)/4)
+
+  moyenne(noteGlobale: number, noteDecors: number, noteActeur: number, noteScena: number) {
+
+    return Math.round((noteGlobale + noteDecors + noteActeur + noteScena) / 4)
   }
 
 }
 
- 
-  
+
+
 
 
 

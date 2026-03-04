@@ -1,6 +1,6 @@
 <!-- <p>films-vus works!</p> -->
 
-<!-- @for (movie of movies$ | async; track movie.id) { 
+<!-- @for (movie of movies$ | async; track movie.id) {
 
 <app-historique [movie]="movie"></app-historique>
 } -->
@@ -8,7 +8,9 @@
 @for (movie of movies$ | async; track movie.id) {
 <div class="card shadow m-4" style="width: 15rem; min-height: 30rem">
   <!-- <img [src]="'http://localhost:8080/movies/' + movie.id + '/image'" class="card-img-top"> -->
-   <img [src]="movie.image" class="card-img-top" *ngIf="movie.image">
+  @if(movie.image){
+   <img [src]="movie.image" class="card-img-top"/>
+  }
   <div class="card-body d-flex flex-column">
     <h5 class="card-title text-center">{{ movie.title }}</h5>
 

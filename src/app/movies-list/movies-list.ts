@@ -16,14 +16,31 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class MoviesList {
 
+  isConfirmOpen = false;
+  confirmMessage = '';
+
+  private confirmResolver!: (value: boolean) => void;
 private readonly moviesApi = inject(MoviesApi);
  movies$ = this.moviesApi.getMovies();
 
 constructor(private toastr: ToastrService,) {
 }
 
-  deleteMovie(movie: Movie) {
-    const confirmed = confirm(`Voulez-vous vraiment supprimer "${movie.title}" ?`);
+  openConfirm(message: string): Promise<boolean> {
+    this.confirmMessage = message;
+    this.isConfirmOpen = true;
+
+    return new Promise<boolean>((resolve) => {
+      this.confirmResolver = resolve;
+    });
+  }
+  confirm(result: boolean) {
+    this.isConfirmOpen = false;
+    this.confirmResolver(result);
+  }
+
+  async deleteMovie(movie: Movie) {
+    const confirmed = await this.openConfirm('Voulez-vous vraiment supprimer ce film?');
 
     if (confirmed && movie.id !== undefined) {
       this.moviesApi.deleteMovie(movie.id).subscribe(() => {
@@ -32,4 +49,5 @@ constructor(private toastr: ToastrService,) {
       });
     }
   }
+
 }

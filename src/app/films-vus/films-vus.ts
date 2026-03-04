@@ -1,10 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AsyncPipe, JsonPipe, SlicePipe } from '@angular/common';
 import { MoviesList } from '../movies-list/movies-list';
 import { MoviesApi } from '../services/movies-api';
 import { Historique } from '../historique/historique';
 import { FormsModule } from '@angular/forms';
+import { Review, ReviewRequest } from '../models/review';
 
 
 @Component({
@@ -13,7 +14,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './films-vus.html',
   styleUrls: ['./films-vus.scss'],
 })
-export class FilmsVus {
+export class FilmsVus implements OnInit {
 
   private readonly moviesApi = inject(MoviesApi);
   movies$ = this.moviesApi.getMovies();
@@ -58,6 +59,47 @@ export class FilmsVus {
   noteglobale : number = 0;
   noteMoyenne : number = 0;
 
+// save() {
+//   if(this.selectedMovie){
+//     this.selectedMovie.userRate = this.ratingTemp;
+//     this.selectedMovie.comment = this.commentTemp;
+//     this.selectedMovie.userRateScena = this.ratingTempScena;
+//     this.selectedMovie.userRateActeurs = this.ratingTempActeurs;
+//     this.selectedMovie.userRateDecors = this.ratingTempDecors;
+//     this.noteglobale = this.moyenne(this.ratingTemp, this.ratingTempActeurs, this.ratingTempDecors, this.ratingTempScena)
+//     this.selectedMovie.noteMoyenne = this.noteglobale;
+//     this.selectedMovie.hasRated = this.noteglobale > 0;
+
+//     this.moviesApi.updateMovie(this.selectedMovie).subscribe({
+//       next: ()=> console.log("Saved"),
+//       error: err => console.error("save error", err)
+//     });
+//   }
+
+//   }
+
+currentUser: any;
+
+  ngOnInit(){
+const mockUser = {
+  id: 1,
+  firstName: "catia",
+  lastName: "catia",
+  age: 49,
+  email: "cnqjdc@_getNormalisedMousePosition.com",
+  points: 48,
+};
+
+this.currentUser = mockUser;
+//     this.currentUser = JSON.parse(
+//       localStorage.getItem("user") || "{}"
+//     );
+  }
+
+
+
+
+
 save() {
   if(this.selectedMovie){
     this.selectedMovie.userRate = this.ratingTemp;
@@ -68,9 +110,43 @@ save() {
     this.noteglobale = this.moyenne(this.ratingTemp, this.ratingTempActeurs, this.ratingTempDecors, this.ratingTempScena)
     this.selectedMovie.noteMoyenne = this.noteglobale;
     this.selectedMovie.hasRated = this.noteglobale > 0;
+
+  //   const review: ReviewRequest = {
+  //   // id: 0,
+  //   userId: this.currentUser.id, 
+  //   filmId: this.selectedMovie.id,
+  //   rate: this.moyenne(
+  //     this.ratingTempScena,
+  //     this.ratingTempActeurs,
+  //     this.ratingTempDecors,
+  //     this.ratingTemp
+  //   ),
+  //   text: this.commentTemp,
+  //    reviewDate: new Date()
+  // };
+
+  const review = {
+  user: { id: this.currentUser.id },
+  movie: { id: this.selectedMovie.id },
+  rate: this.moyenne(
+    this.ratingTempScena,
+    this.ratingTempActeurs,
+    this.ratingTempDecors,
+    this.ratingTemp
+  ),
+  text: this.commentTemp
+};
+
+    this.moviesApi.addReview(review).subscribe({
+    next: () => console.log("Review saved ✅"),
+    error: err => {console.error("Review save error ❌", err)
+    console.error("Error details:", err.error);}
+  });
   }
-  
+
   }
+
+
 
   // Notes du scénario------------------------------------
 
@@ -114,10 +190,6 @@ save() {
    
     return Math.round((noteGlobale + noteDecors +  noteActeur + noteScena)/4)
   }
-
-
-
-
 
 }
 

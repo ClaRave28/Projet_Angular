@@ -1,20 +1,35 @@
-@if(user){
+<div class="container mt-5 d-flex justify-content-center">
+  @if(isConnect()){
 
-<div>
-  <p>Nom : {{ user.lastName }}</p>
-  <p>Prénom : {{ user.firstName }}</p>
-  <p>Email : {{ user.email }}</p>
-</div>
-  <a class="btn btn-outline-danger px-4 rounded-pill shadow-sm" (click)="deconect()">Deconection</a>
-}@else{
-  <form [formGroup]="loginForm" (ngSubmit)="submit()">
-    <div>
-      <label for="email">Email :</label>
-      <input id="email" type="email" formControlName="email" />
+
+    <div class="card shadow-sm p-4" style="width: 350px;">
+      <h3 class="card-title text-center mb-3">Profil utilisateur</h3>
+
+      <div class="mb-2"><strong>Nom :</strong> {{ user?.lastName }}</div>
+      <div class="mb-2"><strong>Prénom :</strong> {{ user?.firstName }}</div>
+      <div class="mb-3"><strong>Email :</strong> {{ user?.email }}</div>
+
+      <button class="btn btn-outline-danger w-100 rounded-pill" (click)="deconect()">
+        Déconnexion
+      </button>
     </div>
 
-    <button type="submit">
-      Se connecter
-    </button>
-  </form>
+}@else{
+      <div class="card shadow-sm p-4" style="width: 350px;">
+        <h3 class="card-title text-center mb-3">Se connecter</h3>
+
+        <form [formGroup]="loginForm" (ngSubmit)="submit()">
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email :</label>
+            <input id="email" type="email" formControlName="email" class="form-control" placeholder="Entrez votre email" />
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100 rounded-pill" [disabled]="loginForm.invalid">
+            Se connecter
+          </button>
+
+        </form>
+      </div>
 }
+</div>

@@ -1,7 +1,8 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, signal, WritableSignal} from '@angular/core';
 import {UserService} from '../services/user-service';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ToastrService} from 'ngx-toastr';
+import {User} from '../models/User';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,8 +14,9 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class UserProfile {
 
-  private readonly userService = inject(UserService);
-  protected user = this.userService.getCurrentUser();
+  protected isConnect: WritableSignal<boolean> = signal(false);
+  protected readonly userService = inject(UserService);
+  protected user : User | null = null;
   loginForm: FormGroup;
 
   constructor(
@@ -24,11 +26,12 @@ export class UserProfile {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
     });
+    this.user = this.userService.getCurrentUser()
+    if (this.user){
+      this.isConnect.set(true);
+    }
   }
 
-  deconect(): void {
-    this.userService.logout();
-  }
 
   async submit() {
     if (this.loginForm.invalid) return;
@@ -38,10 +41,17 @@ export class UserProfile {
     try {
       this.user = await this.userService.getUserByEmail(email)
       this.userService.setCurrentUser(this.user);
+      this.isConnect.set(true)
       this.toastr.success(`Bienvenue ${this.user.firstName} !`);
     }catch(err) {
       this.toastr.error('Utilisateur non trouvé');
     }
+  }
+
+  deconect() {
+    this.userService.logout();
+    this.toastr.success('Déconnecté');
+    this.isConnect.set(false)
   }
 
 }

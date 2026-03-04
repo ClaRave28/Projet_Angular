@@ -9,3 +9,10 @@ export interface Review {
   text: string;
   reviewDate: Date;
 }
+
+export interface ReviewRequest {
+  user: { id: number };
+  movie: { id: number };
+  rate: number;
+  text: string;
+}

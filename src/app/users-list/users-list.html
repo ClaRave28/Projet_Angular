@@ -1,6 +1,6 @@
 <div class="container mt-5">
   <div class="card shadow-sm">
-    <div class="card-header bg-info text-white d-flex align-items-center justify-content-between">
+    <div class="card-header card-header-custom text-white d-flex align-items-center justify-content-between">
       <h4 class="mb-0">Users</h4>
       <button class="btn btn-light btn-sm rounded-pill" routerLink="/sign-in">Add User</button>
     </div>
@@ -40,4 +40,24 @@
     </div>
   </div>
 </div>
+}
+@if(isConfirmOpen){
+
+  <div class="popup-backdrop">
+
+    <div class="popup-content text-center">
+      <h5 class="mb-3">Confirmation</h5>
+
+      <p>{{ confirmMessage }}</p>
+
+      <div class="d-flex justify-content-end gap-2 mt-3">
+        <button class="btn btn-secondary" (click)="confirm(false)">
+          Annuler
+        </button>
+        <button class="btn btn-danger" (click)="confirm(true)">
+          Confirmer
+        </button>
+      </div>
+    </div>
+  </div>
 }

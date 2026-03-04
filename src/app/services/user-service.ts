@@ -7,7 +7,9 @@ import {Review} from '../models/review';
 @Injectable({providedIn: 'root',})
 export class UserService {
 
+  selectedUser = signal<User | null>(null);
   private readonly httpClient = inject(HttpClient);
+
   readonly url = "http://localhost:8080/users"
 
   private currentUser: User | null = null;
@@ -40,9 +42,6 @@ export class UserService {
   isLoggedIn(): boolean {
     return this.currentUser !== null;
   }
-
-
-  selectedUser = signal<User | null>(null);
 
   async addUser(user: User): Promise<User> {
 

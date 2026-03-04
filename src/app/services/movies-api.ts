@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Movie } from '../models/movie';
+import { Review, ReviewRequest } from '../models/review';
 
 @Injectable({
   providedIn: 'root',
@@ -32,6 +33,13 @@ updateMovie(movie: Movie) {
   return this.httpClient.put<Movie>(
     `${this.url}/${movie.id}`,
     movie
+  );
+}
+
+addReview(review: ReviewRequest){
+  return this.httpClient.post(
+    "http://localhost:8080/reviews",
+    review
   );
 }
 

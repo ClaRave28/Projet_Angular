@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/
 import {UserService} from '../services/user-service';
 import {ToastrService} from 'ngx-toastr';
 import {Router} from '@angular/router';
+import {User} from '../models/User';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,6 +16,7 @@ import {Router} from '@angular/router';
 export class SignIn {
 
   userForm: FormGroup;
+  protected createdUser: User | undefined;
 
 
   private readonly userService= inject(UserService);
@@ -32,17 +34,25 @@ export class SignIn {
 
   async onSubmit() {
     if (this.userForm.valid) {
+      const formValue = this.userForm.value;
       try {
-        const createdUser = await this.userService.addUser(this.userForm.value);
-        console.log(createdUser);
-        this.toastr.success('User successfully added!');
-        this.userService.setCurrentUser(createdUser);
+        this.createdUser = await this.userService.addUser(formValue);
+        this.userService.setCurrentUser(this.createdUser);
+        this.toastr.success('Utilisateur ajouté avec succès !');
         this.router.navigate(['/profile']);
-
-      } catch (err) {
-        this.toastr.error("Sign in failed");
-        console.error(err);
-      }
-    }
+      } catch (addError) {
+        try {
+          this.createdUser = await this.userService.getUserByEmail(formValue.email);
+          if (this.createdUser) {
+            this.userService.setCurrentUser(this.createdUser);
+            this.toastr.success('Utilisateur connecté !');
+            this.router.navigate(['/profile']);
+          } else {
+            this.toastr.error('Utilisateur non trouvé');
+          }
+        } catch (getError) {
+          this.toastr.error('Erreur lors de la récupération de l’utilisateur');
+        }
+      }}
   }
 }

@@ -18,7 +18,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (movie of movies$ | async; track movie.id) { 
+    @for (movie of movies$ | async; track movie.id) {
     <tr>
       <!-- <th scope="row"> 1 </th> -->
       <td>{{ movie.id }}</td>
@@ -28,7 +28,7 @@
         <td>{{ movie.rate }}</td>
         <td>{{ movie.synopsis }}</td>
         <td><button type="button" class="btn btn-danger deleteButton" (click)="deleteMovie(movie)"><i class="bi bi-trash"></i></button>
-        <td><button type="button" class="btn btn-success" [routerLink]="['/add-movie', movie.id]"><i class="bi bi-arrow-counterclockwise"></i></button></td>
+        <td><button type="button" class="btn btn-success" [routerLink]="['/add-movie', movie.id]"><i class="bi bi-pencil"></i></button></td>
     </tr>
     }
   </tbody>
@@ -37,3 +37,24 @@
 <div class="d-grid gap-2 col-3 mx-auto">
 <button type="button" class="btn btn-secondary" routerLink="/add-movie">Nouveau film</button>
 </div>
+
+@if(isConfirmOpen){
+
+<div class="popup-backdrop">
+
+  <div class="popup-content text-center">
+    <h5 class="mb-3">Confirmation</h5>
+
+    <p>{{ confirmMessage }}</p>
+
+    <div class="d-flex justify-content-end gap-2 mt-3">
+      <button class="btn btn-secondary" (click)="confirm(false)">
+        Annuler
+      </button>
+      <button class="btn btn-danger" (click)="confirm(true)">
+        Confirmer
+      </button>
+    </div>
+  </div>
+
+</div>}

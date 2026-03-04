@@ -5,6 +5,10 @@
   font-size: 14px;
 }
 
+.card-header-custom {
+  background-color:#6EC1FF;
+}
+
 .custom-grid .ag-header {
   background: linear-gradient(135deg, #520B98, #6366f1);
   border-bottom: none;
@@ -60,7 +64,7 @@
 
 /* Contenu popup */
 .popup-content {
-  background: #6366f1;
+  background: darkgray;
   padding: 20px;
   border-radius: 12px;
   width: 320px;

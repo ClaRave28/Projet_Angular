@@ -21,6 +21,10 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class UsersList implements OnInit {
 
+  isConfirmOpen = false;
+  confirmMessage = '';
+  private confirmResolver!: (value: boolean) => void;
+
   context = { componentParent: this };
 
   protected readonly toastr = inject(ToastrService);
@@ -76,9 +80,9 @@ export class UsersList implements OnInit {
   };
 
   async deleteUser(user: User) {
-    const confirmDelete = confirm(`Delete ${user.firstName} ${user.lastName} ?`);
+    const confirmed = await this.openConfirm('Voulez-vous vraiment supprimer ce film?');
 
-    if (!confirmDelete) return;
+    if (!confirmed) return;
 
     try {
       await this.userService.deleteUser(user.id);
@@ -87,6 +91,19 @@ export class UsersList implements OnInit {
     } catch (err) {
       this.toastr.error("Deleting error");
     }
+  }
+
+  openConfirm(message: string): Promise<boolean> {
+    this.confirmMessage = message;
+    this.isConfirmOpen = true;
+
+    return new Promise<boolean>((resolve) => {
+      this.confirmResolver = resolve;
+    });
+  }
+  confirm(result: boolean) {
+    this.isConfirmOpen = false;
+    this.confirmResolver(result);
   }
 
   openEditPopup(user: User) {
@@ -126,4 +143,5 @@ export class UsersList implements OnInit {
     // navigue vers la page reviews (sans passer l’ID)
     this.router.navigate(['/users/reviews']);
   }
+
 }

@@ -19,8 +19,8 @@ export class UserReviews implements OnInit {
 
   protected reviews: Review[] = [];
   private userService= inject(UserService);
-  // protected readonly user = this.userService.selectedUser;
-  protected readonly user = signal(this.userService.getCurrentUser());
+  protected readonly user = this.userService.selectedUser;
+  // protected readonly user = signal(this.userService.getCurrentUser());
 
   columnDefs: ColDef[] = [
     { field: 'movie.title', headerName: 'Film', sortable: true, filter: true, flex: 2 },

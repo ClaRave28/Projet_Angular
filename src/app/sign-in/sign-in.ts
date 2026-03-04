@@ -36,7 +36,8 @@ export class SignIn {
         const createdUser = await this.userService.addUser(this.userForm.value);
         console.log(createdUser);
         this.toastr.success('User successfully added!');
-        this.router.navigate(['/']);
+        this.userService.setCurrentUser(createdUser);
+        this.router.navigate(['/profile']);
 
       } catch (err) {
         this.toastr.error("Sign in failed");

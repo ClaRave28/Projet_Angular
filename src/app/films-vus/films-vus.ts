@@ -67,6 +67,8 @@ export class FilmsVus implements OnInit {
 
   ngOnInit() {
     this.currentUser = this.userService.getCurrentUser();
+    console.log("currentUser chargé :", this.currentUser);
+    console.log("currentUser:", this.userService.getCurrentUser());
 
     if (this.currentUser?.id) {
       this.userService.getUserReviews(this.currentUser.id).then(reviews => {
@@ -84,10 +86,6 @@ export class FilmsVus implements OnInit {
       });
     }
   }
-
-
-
-
 
   save() {
     if (this.selectedMovie) {

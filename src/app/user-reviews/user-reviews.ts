@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, ViewEncapsulation} from '@angular/core';
+import {Component, inject, OnInit, ViewEncapsulation, signal} from '@angular/core';
 import {Review} from '../models/review';
 import {RouterLink} from '@angular/router';
 import {UserService} from '../services/user-service';
@@ -19,7 +19,8 @@ export class UserReviews implements OnInit {
 
   protected reviews: Review[] = [];
   private userService= inject(UserService);
-  protected readonly user = this.userService.selectedUser;
+  // protected readonly user = this.userService.selectedUser;
+  protected readonly user = signal(this.userService.getCurrentUser());
 
   columnDefs: ColDef[] = [
     { field: 'movie.title', headerName: 'Film', sortable: true, filter: true, flex: 2 },
